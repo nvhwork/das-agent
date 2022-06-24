@@ -1,0 +1,15 @@
+{
+	"edge_id":1,
+	"reconnect_time": 10,
+	"sn": "14231190507980c004fd",
+	"cms_addr":"http://192.168.10.38:8000",
+	"login_path":"/api/edge-login",
+	"config_path":"/api/edge-config",
+	"update_sts_path":"/api/update-status",
+	"hls_path":"/api/upload-to-cache",
+	"get_file_cfg_path":"/api/download-config-file",
+	"pri_path":"/home/mic-710iva/.ssh/id_rsa",
+	"def_pass":null,
+	"def_tmp_dir":"/home/e-ai/transcoding/cms/public/hls",
+	"def_app_dir":"/home/bkcs/app"
+}
