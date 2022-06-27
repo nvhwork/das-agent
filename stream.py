@@ -23,6 +23,7 @@ class Stream:
         self.bitrate = 0
         self.resolution = None
         self.inputCodec = None
+        self.outputCodec = None
         self.log = log
 
     def show(self):
@@ -33,7 +34,8 @@ class Stream:
             'url': self.url, 
             'path': self.path, 
             'tmp_folder': self.tmpFolder,
-            'input_codec': self.inputCodec
+            'input_codec': self.inputCodec,
+            'output_codec': self.outputCodec
         }
         print(dic)
 
@@ -55,6 +57,9 @@ class Stream:
     def get_inputCodec(self) -> str:
         return self.inputCodec
 
+    def get_outputCodec(self) -> str:
+        return self.outputCodec
+
     def set_streamId(self, streamId):
         self.streamId = streamId
 
@@ -73,3 +78,6 @@ class Stream:
 
     def set_inputCodec(self, inputCodec):
         self.inputCodec = inputCodec
+
+    def set_outputCodec(self, outputCodec):
+        self.outputCodec = outputCodec

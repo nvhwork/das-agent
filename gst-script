@@ -1,0 +1,2 @@
+gst-launch-1.0 rtspsrc location="rtsp://admin:secam123@192.168.10.101" ! rtph264depay ! nvv4l2decoder ! n.sink_0 nvstreammux name=n width=1280 height=720 batch-size=1 ! nvv4l2h264enc bitrate=3000000 maxperf-enable=true disable-cabac=true idrinterval=60 ! h264parse ! mpegtsmux ! hlssink playlist-location=master.m3u8 target-duration=1
+

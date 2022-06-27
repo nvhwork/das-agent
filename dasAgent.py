@@ -77,7 +77,7 @@ def parseConfig(hlsPushControl):
         database = 'transcoding'
     )
     cursor = db.cursor()
-    sql = "SELECT stream_id, stream_bitrate, stream_width, stream_height, camera_name, camera_url, camera_codec " \
+    sql = "SELECT stream_id, stream_bitrate, stream_width, stream_height, camera_name, camera_url, camera_codec, stream_codec " \
         + "FROM streams JOIN cameras ON cameras.camera_name = streams.stream_input_camera"
     try:
         cursor.execute(sql)
@@ -96,6 +96,7 @@ def parseConfig(hlsPushControl):
         stream.set_path('/' + row[4] + '/' + resolution)
         stream.set_url(row[5])
         stream.set_inputCodec(row[6])
+        stream.set_outputCodec(row[7])
         listStreams.append(stream)
 
     return hlsPushControl.updateConfig(listStreams)

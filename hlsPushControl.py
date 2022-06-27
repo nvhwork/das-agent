@@ -111,20 +111,33 @@ class HlsPushControl:
             else:
                 if stream.get_url() is not None:
                     depay = ' ! '
-                    if ('H.264' in stream.get_inputCodec()):
-                        depay += 'rtph264depay'
-                    elif ('H.265' in stream.get_inputCodec()):
+                    enc = ' ! '
+                    parser = ' ! '
+                    res = str(stream.get_resolution()).split('x')
+
+                    if ('H.265' in stream.get_inputCodec()):
                         depay += 'rtph265depay'
+                    elif ('H.264' in stream.get_inputCodec()):
+                        depay += 'rtph264depay'
+
+                    if ('H.265' in stream.get_outputCodec()):
+                        enc += 'nvv4l2h265enc bitrate=' + str(stream.get_bitrate())
+                        parser += 'h265parse'
+                    else:
+                        enc += 'nvv4l2h264enc bitrate=' + str(stream.get_bitrate())
+                        parser += 'h264parse'
+
                     cmd = "#!/bin/sh\n" \
                             + "cd "+ dirPath + "\n" \
                             + "gst-launch-1.0 rtspsrc location=" + stream.get_url() + depay \
-                            + " ! nvv4l2decoder ! nvv4l2h264enc bitrate=" + str(stream.get_bitrate()) \
-                            + " maxperf-enable=true disable-cabac=true idrinterval=60 ! h264parse " \
-                            + " ! mpegtsmux ! hlssink playlist-location=index.m3u8 " \
-                            + " target-duration=1 --gst-debug=3 >loggst.txt 2>&1 &\n"
-                    ret =  writeFileConfig(join(dirPath, 'rungst.sh'), cmd)
+                            + " ! nvv4l2decoder ! n.sink_0 nvstreammux name=n batch-size=1 width=" + res[0] \
+                            + " height=" + res[1] + enc \
+                            + " maxperf-enable=true disable-cabac=true idrinterval=60 " + parser \
+                            + " ! mpegtsmux ! hlssink playlist-location=index.m3u8 playlist-length=3 " \
+                            + " max-files=5 target-duration=3 --gst-debug=3 >loggst.txt 2>&1 &\n"
+                    ret =  writeFileConfig(join(dirPath, 'runGst.sh'), cmd)
                     if ret:
-                        subprocess.call(shlex.split(join(dirPath, 'rungst.sh')))
+                        subprocess.call(shlex.split(join(dirPath, 'runGst.sh')))
                         app = GstApp(stream.get_streamId())
                         self.gstAppList.append(app)
                         sts = STS_OK
