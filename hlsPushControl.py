@@ -124,7 +124,7 @@ class HlsPushControl:
                         enc += 'nvv4l2h265enc bitrate=' + str(stream.get_bitrate())
                         parser += 'h265parse'
                     else:
-                        enc += 'nvv4l2h264enc bitrate=' + str(stream.get_bitrate())
+                        enc += 'nvv4l2h264enc disable-cabac=true bitrate=' + str(stream.get_bitrate())
                         parser += 'h264parse'
 
                     cmd = "#!/bin/sh\n" \
@@ -132,7 +132,7 @@ class HlsPushControl:
                             + "gst-launch-1.0 rtspsrc location=" + stream.get_url() + depay \
                             + " ! nvv4l2decoder ! n.sink_0 nvstreammux name=n batch-size=1 width=" + res[0] \
                             + " height=" + res[1] + enc \
-                            + " maxperf-enable=true disable-cabac=true idrinterval=60 " + parser \
+                            + " maxperf-enable=true idrinterval=60 " + parser \
                             + " ! mpegtsmux ! hlssink playlist-location=index.m3u8 playlist-length=3 " \
                             + " max-files=5 target-duration=3 --gst-debug=3 >loggst.txt 2>&1 &\n"
                     ret =  writeFileConfig(join(dirPath, 'runGst.sh'), cmd)
