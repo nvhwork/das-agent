@@ -37,7 +37,7 @@ KEY_DEF_APP_DIR = 'def_app_dir'
 import json
 
 try:
-    f = open('config.json')
+    f = open('/home/e-ai/transcoding/das-agent/config.json')
     conf = json.load(f)
     if (KEY_SERVER_ADDR in conf):
         SERVER_ADDR = conf[KEY_SERVER_ADDR]

@@ -4,12 +4,10 @@ Use for Edge device as: Jetson Nano, Xavier, Protect
 Author: ThangNX - thangnx97@gmail.com
 '''
 
+import os
 import subprocess
-import shlex
 from time import sleep
-from unittest import result
-from default import SERVER_ADDR, RECONNECT_TIME, SERIAL_NUMBER, DEFAULT_DEEP_APP_PATH
-from datetime import datetime
+from default import RECONNECT_TIME
 import logging
 from hlsPushControl import HlsPushControl
 from requestControl import RequestControl
@@ -21,6 +19,7 @@ from version import __version
 from mylog import setupLog
 from threading import Lock
 import pymysql
+import signal
 
 MAX_TRY = 5
 
@@ -165,6 +164,11 @@ def run(isFile, logLevel):
 
     print('Bye.')
 
+# Handle program when terminating
+def sigterm_handler(_signo, _stack_frame):
+    print("Program ended!")
+    subprocess.run(['rm', '-r', '/home/e-ai/transcoding/cms/public/hls'])
+    os._exit(0)
 
 def main():
     isFile = False
@@ -176,9 +180,13 @@ def main():
             logLevel = 'debug'
         if arg == '-f':
             isFile = True
-    # subprocess.run(['rm', '-r', '/home/e-ai/transcoding/CMS-hls/public/hls'])
     run(isFile, logLevel)
 
 if __name__ == '__main__':
+    signal.signal(signal.SIGTERM, sigterm_handler)
+
+try:
     main()
 
+finally:
+    pass
