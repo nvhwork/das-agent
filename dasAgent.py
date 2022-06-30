@@ -167,7 +167,7 @@ def run(isFile, logLevel):
 # Handle program when terminating
 def sigterm_handler(_signo, _stack_frame):
     print("Program ended!")
-    subprocess.run(['rm', '-r', '/home/e-ai/transcoding/cms/public/hls'])
+    # subprocess.run(['rm', '-r', '/home/e-ai/transcoding/cms/public/hls'])
     os._exit(0)
 
 def main():
