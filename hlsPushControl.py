@@ -133,8 +133,8 @@ class HlsPushControl:
                             + " ! nvv4l2decoder ! n.sink_0 nvstreammux name=n batch-size=1 width=" + res[0] \
                             + " height=" + res[1] + enc \
                             + " maxperf-enable=true idrinterval=60 " + parser \
-                            + " ! mpegtsmux ! hlssink playlist-location=index.m3u8 playlist-length=3 " \
-                            + " max-files=5 target-duration=3 --gst-debug=3 >loggst.txt 2>&1 &\n"
+                            + " ! mpegtsmux ! hlssink playlist-location=index.m3u8 playlist-length=5 " \
+                            + " max-files=7 target-duration=3 --gst-debug=3 >loggst.txt 2>&1 &\n"
                     ret =  writeFileConfig(join(dirPath, 'runGst.sh'), cmd)
                     if ret:
                         subprocess.call(shlex.split(join(dirPath, 'runGst.sh')))
